@@ -75,6 +75,8 @@ class WalletListActivity : BaseActivity() {
 
         override fun onItemClick(item: ItemCoinInfo) {
             Logger.d(item)
+            // todo: add index
+            storedKey.account(1)
         }
 
     }
