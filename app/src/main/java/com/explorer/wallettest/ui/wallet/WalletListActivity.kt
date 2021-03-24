@@ -1,4 +1,4 @@
-package com.explorer.wallettest.ui
+package com.explorer.wallettest.ui.wallet
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,11 +15,12 @@ import com.explorer.wallettest.entity.BTC
 import com.explorer.wallettest.entity.ETH
 import com.explorer.wallettest.entity.ItemCoinInfo
 import com.explorer.wallettest.entity.NEW
-import com.explorer.wallettest.event.CREATE_WALLET_STORE_KEY
+import com.explorer.wallettest.event.ADD_ASSET
 import com.explorer.wallettest.event.LiveDataBus
 import com.explorer.wallettest.logger.Logger
-import com.explorer.wallettest.viewmodel.CreateWalletViewModel
-import com.explorer.wallettest.viewmodel.CreateWalletViewModelFactory
+import com.explorer.wallettest.ui.base.BaseActivity
+import com.explorer.wallettest.viewmodel.WalletViewModel
+import com.explorer.wallettest.viewmodel.WalletViewModelFactory
 import kotlinx.android.synthetic.main.activity_wallet_list.*
 import wallet.core.jni.CoinType
 import wallet.core.jni.StoredKey
@@ -31,7 +32,7 @@ import wallet.core.jni.StoredKey
  * @description
  * @copyright (c) 2021 Newton Foundation. All rights reserved.
  */
-class WalletListActivity : BaseActivity() {
+class WalletListActivity : BaseActivity<WalletViewModel>() {
 
     private val password = "111111".toByteArray()
 
@@ -39,11 +40,10 @@ class WalletListActivity : BaseActivity() {
 
     private lateinit var storedKey: StoredKey
 
-    private val viewModel: CreateWalletViewModel by viewModels { CreateWalletViewModelFactory }
+    private val walletViewModel: WalletViewModel by viewModels { WalletViewModelFactory }
 
 
     init {
-        Logger.d(TAG, "init")
         val btc = ItemCoinInfo(CoinType.BITCOIN, BTC)
         val eth = ItemCoinInfo(CoinType.ETHEREUM, ETH)
         val new = ItemCoinInfo(CoinType.NEWCHAIN, NEW)
@@ -54,8 +54,7 @@ class WalletListActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_wallet_list)
-        LiveDataBus.with<StoredKey>(CREATE_WALLET_STORE_KEY).observeStick(this, onStoredKeyObserver)
+        LiveDataBus.with<StoredKey>(ADD_ASSET).observeStick(this, onStoredKeyObserver)
     }
 
     private val walletItemListener = object : OnWalletItemListener {
@@ -84,7 +83,6 @@ class WalletListActivity : BaseActivity() {
     private val adapter = CoinAdapter(walletItemListener)
 
     override fun initView() {
-        Logger.d("init view")
         val values = supportCoins.values.toMutableList()
         adapter.setData(values)
         coinRecyclerView.adapter = adapter
@@ -160,4 +158,10 @@ class WalletListActivity : BaseActivity() {
         fun onCheckedChanged(item: ItemCoinInfo, isChecked: Boolean)
         fun onItemClick(item: ItemCoinInfo)
     }
+
+    override fun initViewModel() {
+        viewModel = walletViewModel
+    }
+
+    override fun contentViewId(): Int = R.layout.activity_wallet_list
 }

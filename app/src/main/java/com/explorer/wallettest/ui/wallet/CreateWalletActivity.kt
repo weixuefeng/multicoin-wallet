@@ -1,7 +1,5 @@
-package com.explorer.wallettest.ui
+package com.explorer.wallettest.ui.wallet
 
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,17 +9,13 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.explorer.network.api.NewExplorerApi
-import com.explorer.network.beans.ExplorerResponse
-import com.explorer.network.observer.BaseObserver
 import com.explorer.wallettest.R
-import com.explorer.wallettest.api.ApiNewExplorer
-import com.explorer.wallettest.entity.TokenListData
 import com.explorer.wallettest.event.CREATE_WALLET_STORE_KEY
 import com.explorer.wallettest.event.LiveDataBus
 import com.explorer.wallettest.router.Router
-import com.explorer.wallettest.viewmodel.CreateWalletViewModel
-import com.explorer.wallettest.viewmodel.CreateWalletViewModelFactory
+import com.explorer.wallettest.ui.base.BaseActivity
+import com.explorer.wallettest.viewmodel.WalletViewModel
+import com.explorer.wallettest.viewmodel.WalletViewModelFactory
 import wallet.core.jni.StoredKey
 
 /**
@@ -31,17 +25,11 @@ import wallet.core.jni.StoredKey
  * @description
  * @copyright (c) 2021 Newton Foundation. All rights reserved.
  */
-class CreateWalletActivity : BaseActivity() {
+class CreateWalletActivity : BaseActivity<WalletViewModel>() {
 
     private val password = "111111".toByteArray()
 
-    private val viewModel: CreateWalletViewModel by viewModels { CreateWalletViewModelFactory }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_wallet)
-    }
-
+    private val walletViewModel: WalletViewModel by viewModels { WalletViewModelFactory }
 
     private val listener: OnStoreItemClickListener = object : OnStoreItemClickListener {
 
@@ -67,6 +55,11 @@ class CreateWalletActivity : BaseActivity() {
         viewModel.localStoreKeys.observe(this, onLocalStoreKeys)
     }
 
+    override fun initViewModel() {
+        viewModel = walletViewModel
+    }
+
+
     private val onLocalStoreKeys = Observer<MutableList<StoredKey>> {
         walletAdapter.setData(it)
     }
@@ -75,21 +68,6 @@ class CreateWalletActivity : BaseActivity() {
         val storeKey = StoredKey("name", password)
         viewModel.addLocalStoreKey(storeKey)
         walletAdapter.addData(storeKey)
-
-        NewExplorerApi.getService(ApiNewExplorer::class.java)
-            .getTokensListByAddress("0x97549E368AcaFdCAE786BB93D98379f1D1561a29")
-            .compose(NewExplorerApi.getInstance().applySchedulers(object: BaseObserver<ExplorerResponse<List<TokenListData>>>() {
-                override fun onSuccess(t: ExplorerResponse<List<TokenListData>>) {
-                    Log.e(TAG, t.toString())
-                }
-
-                override fun onFailure(e: Throwable?) {
-                    e?.message.let {
-                        Log.e(TAG, it+ "")
-                    }
-                }
-
-            }))
     }
 
 
@@ -143,7 +121,5 @@ class CreateWalletActivity : BaseActivity() {
         fun onItemClick(storedKey: StoredKey)
     }
 
-    fun log(msg: String) {
-        Log.e("CreateWalletActivity", msg)
-    }
+    override fun contentViewId(): Int = R.layout.activity_create_wallet
 }

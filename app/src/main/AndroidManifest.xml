@@ -13,16 +13,19 @@
         android:usesCleartextTraffic="true"
         android:name=".App"
         android:theme="@style/Theme.WalletTest">
-        <activity android:name=".MainActivity">
-        </activity>
-        <activity android:name=".ui.CreateWalletActivity">
+        <activity android:name=".ui.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.WalletListActivity"/>
+        <activity android:name=".MainActivity">
+        </activity>
+        <activity android:name=".ui.wallet.WalletListActivity"/>
+        <activity android:name=".ui.wallet.CreateWalletActivity"/>
+        <activity android:name=".ui.wallet.CurrentWalletActivity"/>
+        <activity android:name=".ui.wallet.asset.AssetDetailActivity"/>
     </application>
 
 </manifest>

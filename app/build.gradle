@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+//    id 'kotlin-parcelize'
     id 'kotlin-android-extensions'
 }
 
@@ -32,7 +33,15 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    // open dataBinding
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
 }
+
+
 repositories {
     flatDir {
         dirs 'libs'
@@ -71,6 +80,8 @@ dependencies {
     // optional - Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
 
+    // preference
+    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha08"
 
 
 }

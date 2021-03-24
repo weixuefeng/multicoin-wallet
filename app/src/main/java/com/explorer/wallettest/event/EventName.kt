@@ -8,3 +8,5 @@ package com.explorer.wallettest.event
  * @copyright (c) 2021 Newton Foundation. All rights reserved.
  */
 const val CREATE_WALLET_STORE_KEY = "CREATE_WALLET_STORE_KEY"
+const val ADD_ASSET = "ADD_ASSET"
+const val ASSET_DETAIL = "ASSET_DETAIL"

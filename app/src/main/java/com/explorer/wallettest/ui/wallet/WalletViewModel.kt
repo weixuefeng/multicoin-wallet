@@ -1,12 +1,13 @@
 package com.explorer.wallettest.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.explorer.wallettest.database.LocalStoreKey
 import com.explorer.wallettest.database.LocalStoreKeyDB
+import com.explorer.wallettest.logger.Logger
+import com.explorer.wallettest.repository.PreferenceRepository
 import com.explorer.wallettest.repository.StoreKeyRepository
+import com.explorer.wallettest.ui.base.BaseViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import wallet.core.jni.StoredKey
@@ -18,12 +19,12 @@ import wallet.core.jni.StoredKey
  * @description
  * @copyright (c) 2021 Newton Foundation. All rights reserved.
  */
-class CreateWalletViewModel(
-        private val storeKeyRepository: StoreKeyRepository
-) : ViewModel() {
+class WalletViewModel(
+        private val storeKeyRepository: StoreKeyRepository,
+        private val preferenceRepository: PreferenceRepository,
+) : BaseViewModel() {
 
-    val localStoreKeys = storeKeyRepository.getAllLocalStoreKey().map { unWrapStoreKeys(it) }
-            .asLiveData()
+    val localStoreKeys = storeKeyRepository.getAllLocalStoreKey().map { unWrapStoreKeys(it) }.asLiveData()
 
     fun getLocalStoreKeyById(id: String) = storeKeyRepository.getLocalStoreKeyById(id).asLiveData()
 
@@ -31,7 +32,7 @@ class CreateWalletViewModel(
         return LocalStoreKey(storedKey.identifier(), storedKey.isMnemonic, String(storedKey.exportJSON()))
     }
 
-    private fun unWrapStoreKey(localStoreKey: LocalStoreKey): StoredKey {
+    fun unWrapStoreKey(localStoreKey: LocalStoreKey): StoredKey {
         return StoredKey.importJSON(localStoreKey.keystore.toByteArray())
     }
 
@@ -46,6 +47,7 @@ class CreateWalletViewModel(
     fun addLocalStoreKey(storedKey: StoredKey) = viewModelScope.launch {
         val localStoreKey = wrapStoreKey(storedKey)
         storeKeyRepository.addLocalStoreKey(localStoreKey)
+        preferenceRepository.setCurrentWalletId(localStoreKey.id)
     }
 
     fun updateLocalStoreKey(storedKey: StoredKey) = viewModelScope.launch {
@@ -56,14 +58,27 @@ class CreateWalletViewModel(
     fun deleteLocalStoreKey(storedKey: StoredKey) = viewModelScope.launch {
         storeKeyRepository.deleteLocalStoreKey(wrapStoreKey(storedKey))
     }
+
+    private val currentWallet = MutableLiveData<LocalStoreKey>()
+
+    fun onCurrentWallet(): LiveData<LocalStoreKey> = currentWallet
+
+
+    fun onCurrentWalletId() = preferenceRepository.getCurrentWalletId().asLiveData()
+
+
+    override fun clear() {
+
+    }
+
 }
 
-object CreateWalletViewModelFactory : ViewModelProvider.Factory {
+object WalletViewModelFactory : ViewModelProvider.Factory {
 
     private val storeKeyRepository = StoreKeyRepository(LocalStoreKeyDB.getInstance().localStoreKeyDao())
-
+    private val preferenceRepository = PreferenceRepository.getInstance()
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
-        return CreateWalletViewModel(storeKeyRepository) as T
+        return WalletViewModel(storeKeyRepository, preferenceRepository) as T
     }
 }
