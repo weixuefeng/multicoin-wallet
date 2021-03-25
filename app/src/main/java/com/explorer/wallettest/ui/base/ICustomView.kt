@@ -9,7 +9,7 @@ package com.explorer.wallettest.ui.base
  */
 interface ICustomView<T> {
 
-    fun bindDataToView(data: T)
+    fun setData(data: T)
 
     // set item view listener
     fun setActionListener(listener: ICustomViewActionListener<T>)

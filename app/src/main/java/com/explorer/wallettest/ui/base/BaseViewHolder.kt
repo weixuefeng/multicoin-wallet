@@ -14,6 +14,6 @@ open class BaseViewHolder<T>(private val iCustomView: ICustomView<T>)
     : RecyclerView.ViewHolder(iCustomView as View) {
 
     fun bind(data: T) {
-        iCustomView.bindDataToView(data)
+        iCustomView.setData(data)
     }
 }

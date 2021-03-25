@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import androidx.annotation.LayoutRes
+import com.explorer.wallettest.logger.Logger
 
 /**
  * @author weixuefeng@diynova.com
@@ -24,8 +25,11 @@ open abstract class BaseCustomView<T>: FrameLayout, ICustomView<T> {
         inflateView()
     }
 
+
     private var baseView: View? = null
     private var mListener: ICustomViewActionListener<T>? = null
+    private var data: T? = null
+
 
     private fun inflateView() {
         val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -33,28 +37,30 @@ open abstract class BaseCustomView<T>: FrameLayout, ICustomView<T> {
         if(layoutId != 0) {
             baseView = layoutInflater.inflate(layoutId, this, false)
             addView(baseView)
-            if(mListener != null) {
-                baseView!!.setOnClickListener {
-                    mListener!!.onAction(ICustomViewActionListener.ACTION_ROOT_VIEW_CLICKED, baseView!!, t!!)
+            rootView.setOnClickListener {
+                if(mListener != null) {
+                    Logger.e("listener: $mListener baseview: $baseView it: $it")
+                    mListener!!.onAction(ICustomViewActionListener.ACTION_ROOT_VIEW_CLICKED, rootView, data!!)
                 }
             }
         }
     }
+    
 
-    private var t: T? = null
 
-    override fun bindDataToView(data: T) {
-        t = data
+    override fun setData(data: T) {
+        this.data = data
+        bindDataToView(data)
     }
 
-    override fun getRootView(): View {
-        return baseView!!
-    }
-
-    @LayoutRes abstract fun getLayoutId(): Int
 
     override fun setActionListener(listener: ICustomViewActionListener<T>) {
         mListener = listener
     }
+
+    @LayoutRes
+    protected abstract fun getLayoutId(): Int
+
+    protected abstract fun bindDataToView(data: T)
 
 }

@@ -10,3 +10,4 @@ package com.explorer.wallettest.entity
 const val BTC = "BTC"
 const val ETH = "ETH"
 const val NEW = "NEW"
+const val DOGE = "DOGE"

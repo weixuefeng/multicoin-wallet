@@ -11,10 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.explorer.wallettest.R
-import com.explorer.wallettest.entity.BTC
-import com.explorer.wallettest.entity.ETH
-import com.explorer.wallettest.entity.ItemCoinInfo
-import com.explorer.wallettest.entity.NEW
+import com.explorer.wallettest.entity.*
 import com.explorer.wallettest.event.ADD_ASSET
 import com.explorer.wallettest.event.LiveDataBus
 import com.explorer.wallettest.logger.Logger
@@ -47,9 +44,11 @@ class WalletListActivity : BaseActivity<WalletViewModel>() {
         val btc = ItemCoinInfo(CoinType.BITCOIN, BTC)
         val eth = ItemCoinInfo(CoinType.ETHEREUM, ETH)
         val new = ItemCoinInfo(CoinType.NEWCHAIN, NEW)
+        val doge = ItemCoinInfo(CoinType.DOGECOIN, DOGE)
         supportCoins[CoinType.BITCOIN] = btc
         supportCoins[CoinType.ETHEREUM] = eth
         supportCoins[CoinType.NEWCHAIN] = new
+        supportCoins[CoinType.DOGECOIN] = doge
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

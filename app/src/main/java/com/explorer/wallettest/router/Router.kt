@@ -37,6 +37,7 @@ object Router {
 
     fun openAssetDetail(context: Context, data: Account) {
         val intent = Intent(context, AssetDetailActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context.startActivity(intent)
         LiveDataBus.with<Account>(ASSET_DETAIL).postStickData(data)
     }

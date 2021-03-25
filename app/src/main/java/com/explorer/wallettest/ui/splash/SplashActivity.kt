@@ -58,4 +58,9 @@ class SplashActivity: BaseActivity<SplashViewModel>() {
         return R.layout.activity_splash
     }
 
+    override fun onDestroy() {
+        viewModel.clear()
+        super.onDestroy()
+    }
+
 }

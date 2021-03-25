@@ -31,10 +31,6 @@ open abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity() {
 
     abstract fun initViewModel()
 
-    override fun onDestroy() {
-        viewModel.clear()
-        super.onDestroy()
-    }
 
     companion object {
         val TAG = this::class.java.canonicalName

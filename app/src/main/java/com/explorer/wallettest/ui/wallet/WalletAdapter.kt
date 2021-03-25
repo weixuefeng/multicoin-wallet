@@ -29,11 +29,7 @@ class WalletAdapter: RecyclerView.Adapter<BaseViewHolder<Account>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Account> {
         val itemView = WalletCoinItemView(parent.context)
-        itemView.setActionListener(object : ICustomViewActionListener<Account> {
-            override fun onAction(action: String, view: View, data: Account) {
-                Router.openAssetDetail(view.context, data)
-            }
-        })
+
         return BaseViewHolder(itemView)
     }
 
