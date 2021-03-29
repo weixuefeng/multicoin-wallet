@@ -4,7 +4,6 @@ import com.explorer.network.beans.ExplorerResponse
 import com.explorer.wallettest.entity.TokenListData
 import io.reactivex.Observable
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**

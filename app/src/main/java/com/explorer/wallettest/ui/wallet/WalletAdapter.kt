@@ -1,9 +1,7 @@
 package com.explorer.wallettest.ui.wallet
 
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.explorer.wallettest.router.Router
 import com.explorer.wallettest.ui.base.BaseViewHolder
 import com.explorer.wallettest.ui.base.ICustomViewActionListener
 import com.explorer.wallettest.ui.common.WalletCoinItemView

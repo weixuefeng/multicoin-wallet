@@ -1,14 +1,11 @@
 package com.explorer.wallettest.viewmodel
 
-import android.text.Editable
 import androidx.lifecycle.*
 import com.explorer.wallettest.database.LocalStoreKey
 import com.explorer.wallettest.database.LocalStoreKeyDB
-import com.explorer.wallettest.logger.Logger
 import com.explorer.wallettest.repository.PreferenceRepository
 import com.explorer.wallettest.repository.StoreKeyRepository
 import com.explorer.wallettest.ui.base.BaseViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import wallet.core.jni.StoredKey

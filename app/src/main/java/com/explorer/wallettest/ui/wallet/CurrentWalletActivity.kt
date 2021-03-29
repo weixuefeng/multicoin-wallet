@@ -7,11 +7,9 @@ import com.explorer.wallettest.R
 import com.explorer.wallettest.database.LocalStoreKey
 import com.explorer.wallettest.event.ADD_ASSET
 import com.explorer.wallettest.event.LiveDataBus
-import com.explorer.wallettest.logger.Logger
 import com.explorer.wallettest.router.Router
 import com.explorer.wallettest.ui.base.BaseActivity
 import com.explorer.wallettest.ui.base.ICustomViewActionListener
-import com.explorer.wallettest.ui.common.WalletCoinItemView
 import com.explorer.wallettest.viewmodel.WalletViewModel
 import com.explorer.wallettest.viewmodel.WalletViewModelFactory
 import kotlinx.android.synthetic.main.activity_current_wallet.*

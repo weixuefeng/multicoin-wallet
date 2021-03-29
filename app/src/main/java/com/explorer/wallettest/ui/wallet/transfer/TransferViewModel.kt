@@ -4,25 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.explorer.wallettest.database.LocalStoreKeyDB
 import com.explorer.wallettest.entity.GasSetting
 import com.explorer.wallettest.logger.Logger
 import com.explorer.wallettest.repository.IWalletRepository
-import com.explorer.wallettest.repository.PreferenceRepository
-import com.explorer.wallettest.repository.StoreKeyRepository
 import com.explorer.wallettest.repository.WalletRepository
 import com.explorer.wallettest.ui.base.BaseViewModel
-import com.explorer.wallettest.utils.RxUD
-import io.reactivex.Observable
-import io.reactivex.Observer
 import io.reactivex.Single
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import org.web3j.protocol.core.methods.request.Transaction
-import java.math.BigInteger
 
 /**
  * @author weixuefeng@diynova.com
