@@ -22,8 +22,11 @@ open abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         initViewModel()
+        initIntent()
         initView()
     }
+
+    open fun initIntent() {}
 
     abstract fun contentViewId(): Int
 

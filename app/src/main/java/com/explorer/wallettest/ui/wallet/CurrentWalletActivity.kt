@@ -1,5 +1,6 @@
 package com.explorer.wallettest.ui.wallet
 
+import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.explorer.wallettest.R
@@ -9,6 +10,8 @@ import com.explorer.wallettest.event.LiveDataBus
 import com.explorer.wallettest.logger.Logger
 import com.explorer.wallettest.router.Router
 import com.explorer.wallettest.ui.base.BaseActivity
+import com.explorer.wallettest.ui.base.ICustomViewActionListener
+import com.explorer.wallettest.ui.common.WalletCoinItemView
 import com.explorer.wallettest.viewmodel.WalletViewModel
 import com.explorer.wallettest.viewmodel.WalletViewModelFactory
 import kotlinx.android.synthetic.main.activity_current_wallet.*
@@ -30,14 +33,11 @@ class CurrentWalletActivity : BaseActivity<WalletViewModel>() {
 
         viewModel.onCurrentWalletId().observe(this) {
             if(it != null) {
-                Logger.e("walletId: $it")
                 viewModel.getLocalStoreKeyById(it).observe(this) { localKey ->
-                    Logger.e("localKey: $localKey")
                     initWallet(localKey)
                 }
             }
         }
-
     }
 
     private fun initWallet(localStoreKey: LocalStoreKey) {
@@ -55,9 +55,20 @@ class CurrentWalletActivity : BaseActivity<WalletViewModel>() {
             account.add(storeKey.account(i))
         }
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = WalletAdapter()
+        val adapter = WalletAdapter(itemClickListener)
         recyclerView.adapter = adapter
         adapter.setData(account)
+    }
+
+    private val itemClickListener: ICustomViewActionListener<Account> = object : ICustomViewActionListener<Account> {
+        override fun onAction(action: String, view: View, data: Account) {
+            when(action) {
+                ICustomViewActionListener.ACTION_ROOT_VIEW_CLICKED -> {
+                    Router.openAssetDetail(this@CurrentWalletActivity, data)
+                }
+            }
+        }
+
     }
 
     override fun initViewModel() {

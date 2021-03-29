@@ -17,7 +17,7 @@ import java.util.*
  * @description
  * @copyright (c) 2021 Newton Foundation. All rights reserved.
  */
-class WalletAdapter: RecyclerView.Adapter<BaseViewHolder<Account>>() {
+class WalletAdapter(private val listener: ICustomViewActionListener<Account>): RecyclerView.Adapter<BaseViewHolder<Account>>() {
 
     private val datas = ArrayList<Account>()
 
@@ -28,8 +28,7 @@ class WalletAdapter: RecyclerView.Adapter<BaseViewHolder<Account>>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Account> {
-        val itemView = WalletCoinItemView(parent.context)
-
+        val itemView = WalletCoinItemView(parent.context, listener)
         return BaseViewHolder(itemView)
     }
 

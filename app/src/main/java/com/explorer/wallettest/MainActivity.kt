@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         // 'Import' a wallet
     }
-
+//
 //    private fun getLocalStoreKey() {
 //        GlobalScope.launch {
 //            val localkey =
@@ -316,8 +316,8 @@ class MainActivity : AppCompatActivity() {
 //
 //        }
 //    }
-
-    private fun log(msg: String) {
-        Log.i("WalletNewPay", msg)
-    }
+//
+//    private fun log(msg: String) {
+//        Log.i("WalletNewPay", msg)
+//    }
 }

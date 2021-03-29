@@ -1,5 +1,6 @@
 package com.explorer.wallettest.ui.common
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import android.widget.TextView
@@ -17,16 +18,11 @@ import wallet.core.jni.Account
  * @description
  * @copyright (c) 2021 Newton Foundation. All rights reserved.
  */
-class WalletCoinItemView(context: Context): BaseCustomView<Account>(context) {
+@SuppressLint("ViewConstructor")
+class WalletCoinItemView(context: Context, listener: ICustomViewActionListener<Account>): BaseCustomView<Account>(context) {
 
-    private val listener: ICustomViewActionListener<Account> = object : ICustomViewActionListener<Account> {
-        override fun onAction(action: String, view: View, data: Account) {
-            when(action) {
-                ICustomViewActionListener.ACTION_ROOT_VIEW_CLICKED  -> {
-                    Router.openAssetDetail(view.context, data)
-                }
-            }
-        }
+    companion object {
+        const val ACTION_ROOT_VIEW = "ACTION_ROOT_VIEW"
     }
 
     init {
