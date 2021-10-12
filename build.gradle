@@ -3,7 +3,8 @@ buildscript {
     ext.kotlin_version = '1.5.0-M1'
     ext.kotlin_version = "1.4.21"
     repositories {
-        maven { url 'http://localhost:8046/artifactory/android-maven/' }
+        google()
+        jcenter()
         maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
         mavenCentral()
     }
@@ -18,7 +19,8 @@ buildscript {
 
 allprojects {
     repositories {
-        maven { url 'http://localhost:8046/artifactory/android-maven/' }
+        google()
+        jcenter()
     }
 }
 
