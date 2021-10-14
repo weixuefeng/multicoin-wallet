@@ -4,12 +4,17 @@ import androidx.lifecycle.*
 import com.explorer.wallettest.constants.WALLET_MAIN
 import com.explorer.wallettest.database.LocalStoreKey
 import com.explorer.wallettest.database.LocalStoreKeyDB
+import com.explorer.wallettest.logger.Logger
 import com.explorer.wallettest.repository.PreferenceRepository
 import com.explorer.wallettest.repository.StoreKeyRepository
 import com.explorer.wallettest.ui.base.BaseViewModel
+import com.explorer.wallettest.utils.gson
+import com.explorer.wallettest.utils.unWrap
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import wallet.core.jni.Account
+import wallet.core.jni.CoinType
 import wallet.core.jni.StoredKey
 
 /**
@@ -77,6 +82,16 @@ class WalletViewModel(
 
     override fun clear() {
 
+    }
+
+    fun getAccountInfo(coinType: CoinType) = storeKeyRepository.getLocalStoreKeyByType(coinType.name).asLiveData()
+
+    fun setCurrentAccount(data: Account) = viewModelScope.launch{
+        async {
+
+            Logger.d("TAG", gson.toJson(data))
+            preferenceRepository.setCurrentAccount(data.unWrap())
+        }
     }
 
 }

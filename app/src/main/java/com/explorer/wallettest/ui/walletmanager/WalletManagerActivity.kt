@@ -1,5 +1,6 @@
 package com.explorer.wallettest.ui.walletmanager
 
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -7,12 +8,17 @@ import com.explorer.wallettest.R
 import com.explorer.wallettest.constants.WALLET_MAIN
 import com.explorer.wallettest.database.LocalStoreKey
 import com.explorer.wallettest.logger.Logger
+import com.explorer.wallettest.router.Router
 import com.explorer.wallettest.ui.base.BaseActivity
+import com.explorer.wallettest.ui.base.ICustomViewActionListener
+import com.explorer.wallettest.utils.getSupportCoin
 import com.explorer.wallettest.utils.password
 import com.explorer.wallettest.utils.supportCoin
+import com.explorer.wallettest.utils.toJson
 import com.explorer.wallettest.viewmodel.WalletViewModel
 import com.explorer.wallettest.viewmodel.WalletViewModelFactory
 import kotlinx.android.synthetic.main.activity_wallet_manager.*
+import wallet.core.jni.Account
 import wallet.core.jni.StoredKey
 
 class WalletManagerActivity : BaseActivity<WalletViewModel>() {
@@ -21,6 +27,7 @@ class WalletManagerActivity : BaseActivity<WalletViewModel>() {
 
     lateinit var mCoinInfo: CoinInfo
     private var mCurrentStoreKey: StoredKey? = null
+    lateinit var accountAdapter: AccountRecyclerAdapter
 
     override fun initView() {
         coinRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -32,6 +39,7 @@ class WalletManagerActivity : BaseActivity<WalletViewModel>() {
                 adapter.updateInfo(position)
                 chainName.text = value.coinType.name
                 mCoinInfo = value
+                getAccountInfo()
             }
         })
 
@@ -41,6 +49,47 @@ class WalletManagerActivity : BaseActivity<WalletViewModel>() {
         createWalletButton.setOnClickListener {
             createWallet()
         }
+
+
+        // account recyclerView info
+        coinInfoRecyclerView.layoutManager = LinearLayoutManager(this)
+        accountAdapter = AccountRecyclerAdapter(object : ICustomViewActionListener<Account> {
+            override fun onAction(action: String, view: View, data: Account) {
+                Logger.d("Action", action)
+                Logger.d("Action", data.toJson())
+                when(action) {
+                    ICustomViewActionListener.ACTION_ROOT_VIEW_CLICKED -> {
+                        viewModel.setCurrentAccount(data)
+                        finish()
+                    }
+                }
+
+            }
+        })
+        coinInfoRecyclerView.adapter = accountAdapter
+
+        // todo: first load default wallet.
+        getAccountInfo()
+    }
+
+    private fun getAccountInfo() {
+        viewModel.getAccountInfo(mCoinInfo.coinType).observe(this, onAccountInfo)
+    }
+
+    private val onAccountInfo = Observer<List<LocalStoreKey>> { listLocalStoreKey ->
+        val accounts = listLocalStoreKey.map {
+            val storeKey = viewModel.unWrapStoreKey(it)
+            storeKey.account(0)
+        }.toMutableList()
+
+        if(mCurrentStoreKey != null) {
+            mCurrentStoreKey!!.getSupportCoin(mCoinInfo.coinType).let {
+                if(it != null) {
+                    accounts.add(0, it)
+                }
+            }
+        }
+        accountAdapter.setData(accounts)
     }
 
     private fun createWallet() {

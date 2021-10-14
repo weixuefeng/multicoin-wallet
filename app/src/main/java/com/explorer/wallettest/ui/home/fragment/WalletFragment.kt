@@ -6,13 +6,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.asLiveData
 import com.explorer.wallettest.R
+import com.explorer.wallettest.logger.Logger
+import com.explorer.wallettest.repository.PreferenceRepository
 import com.explorer.wallettest.router.Router
+import com.explorer.wallettest.utils.gson
+import com.explorer.wallettest.utils.toJson
 import kotlinx.android.synthetic.main.wallet_fragment.*
+import kotlinx.coroutines.flow.onCompletion
 
 class WalletFragment : Fragment() {
 
     companion object {
+        val TAG = "WalletFragment"
         fun newInstance() = WalletFragment()
     }
 
@@ -35,4 +42,11 @@ class WalletFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        PreferenceRepository.getInstance().getCurrentAccount().asLiveData().observe(this) {
+            Logger.d(gson.toJson(it), TAG)
+            chainName.text = "${it?.coin?.name}:${it?.address}"
+        }
+    }
 }

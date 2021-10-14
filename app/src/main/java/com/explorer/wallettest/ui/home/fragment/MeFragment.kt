@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.explorer.wallettest.R
+import com.explorer.wallettest.logger.Logger
+import com.explorer.wallettest.repository.PreferenceRepository
 
 class MeFragment : Fragment() {
 
@@ -28,5 +30,7 @@ class MeFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(MeViewModel::class.java)
         // TODO: Use the ViewModel
     }
+
+
 
 }

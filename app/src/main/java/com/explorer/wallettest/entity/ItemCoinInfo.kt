@@ -14,3 +14,10 @@ data class ItemCoinInfo(
     val name: String,
     var isSupport: Boolean = false
 )
+
+data class UnWrapAccount (
+    val coin: CoinType,
+    val address: String,
+    val derivationPath: String,
+    val extendedPublicKey: String
+)

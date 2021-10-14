@@ -54,8 +54,7 @@ class CoinRecyclerAdapter(): RecyclerView.Adapter<CoinRecyclerViewHolder>() {
     fun updateInfo(position: Int) {
         coinList[position].selected = true
         coinList[selectedIndex].selected = false
-        notifyItemChanged(position)
-        notifyItemChanged(selectedIndex)
+        notifyDataSetChanged()
         selectedIndex = position
     }
 
