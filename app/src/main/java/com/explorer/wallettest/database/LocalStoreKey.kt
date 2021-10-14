@@ -14,10 +14,10 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "localStoreKey")
 data class LocalStoreKey (
         @PrimaryKey
-        @ColumnInfo(name = "id")
+        @ColumnInfo(name = "id", defaultValue = "")
         val id: String,
-        @ColumnInfo(name = "isMnemonic")
+        @ColumnInfo(name = "isMnemonic", defaultValue = "")
         val isMnemonic: Boolean,
-        @ColumnInfo(name = "keystore")
+        @ColumnInfo(name = "keystore", defaultValue = "")
         var keystore: String
 )

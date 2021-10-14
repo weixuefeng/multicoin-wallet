@@ -13,7 +13,7 @@ import com.explorer.wallettest.App
  * @description
  * @copyright (c) 2021 Newton Foundation. All rights reserved.
  */
-@Database(entities = [LocalStoreKey::class], version = 1)
+@Database(entities = [LocalStoreKey::class], version = 1, exportSchema = false)
 abstract class LocalStoreKeyDB: RoomDatabase() {
 
     abstract fun localStoreKeyDao(): LocalStoreKeyDao

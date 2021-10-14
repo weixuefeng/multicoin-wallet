@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import com.explorer.wallettest.event.ASSET_DETAIL
 import com.explorer.wallettest.event.LiveDataBus
+import com.explorer.wallettest.ui.home.HomeActivity
 import com.explorer.wallettest.ui.wallet.CreateWalletActivity
 import com.explorer.wallettest.ui.wallet.CurrentWalletActivity
 import com.explorer.wallettest.ui.wallet.WalletListActivity
@@ -32,6 +33,11 @@ object Router {
 
     fun openCurrentWalletActivity(context: Activity) {
         val intent = Intent(context, CurrentWalletActivity::class.java)
+        context.startActivity(intent)
+    }
+
+    fun openHomeActivity(context: Activity) {
+        val intent = Intent(context, HomeActivity::class.java)
         context.startActivity(intent)
     }
 

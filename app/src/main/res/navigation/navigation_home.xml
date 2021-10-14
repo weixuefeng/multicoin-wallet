@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_navigation"
+    app:startDestination="@id/home">
+
+    <fragment
+        android:id="@+id/home"
+        android:name="com.explorer.wallettest.ui.home.fragment.HomeFragment"
+        android:label="home_fragment"
+        tools:layout="@layout/home_fragment" />
+    <fragment
+        android:id="@+id/wallet"
+        android:name="com.explorer.wallettest.ui.home.fragment.WalletFragment"
+        android:label="wallet_fragment"
+        tools:layout="@layout/wallet_fragment" />
+    <fragment
+        android:id="@+id/me"
+        android:name="com.explorer.wallettest.ui.home.fragment.MeFragment"
+        android:label="me_fragment"
+        tools:layout="@layout/me_fragment" />
+</navigation>

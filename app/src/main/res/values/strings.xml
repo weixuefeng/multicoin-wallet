@@ -4,4 +4,7 @@
     <string name="hint_input_value">Input Value</string>
     <string name="hint_input_comment">Comment(Optional)</string>
     <string name="text_next">Next</string>
+    <string name="home">Home</string>
+    <string name="me">me</string>
+    <string name="wallet">wallet</string>
 </resources>

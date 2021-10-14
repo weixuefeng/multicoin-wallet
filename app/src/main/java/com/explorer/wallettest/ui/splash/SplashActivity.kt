@@ -9,8 +9,15 @@ import com.explorer.wallettest.databinding.ActivitySplashBinding
 import com.explorer.wallettest.logger.Logger
 import com.explorer.wallettest.router.Router
 import com.explorer.wallettest.ui.base.BaseActivity
+import com.explorer.wallettest.utils.toHexByteArray
 import kotlinx.android.synthetic.main.activity_splash.*
+import wallet.core.jni.proto.NewChain
 
+import com.google.protobuf.ByteString
+import org.web3j.utils.Numeric
+import wallet.core.java.AnySigner
+import wallet.core.jni.CoinType
+import wallet.core.jni.PrivateKey
 
 /**
  * @author weixuefeng@diynova.com
@@ -36,10 +43,10 @@ class SplashActivity: BaseActivity<SplashViewModel>() {
                 Logger.d(walletId)
                 if(walletId == null) {
                     // no wallet
-                    Router.openCreateWalletActivity(this)
+                    Router.openHomeActivity(this)
                 } else {
                     // go to wallet
-                    Router.openCurrentWalletActivity(this)
+                    Router.openHomeActivity(this)
                 }
                 finish()
             })
@@ -47,7 +54,6 @@ class SplashActivity: BaseActivity<SplashViewModel>() {
     }
 
     override fun initView() {
-
     }
 
     override fun initViewModel() {

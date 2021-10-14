@@ -48,17 +48,14 @@ class WalletRepository : IWalletRepository {
     )
 
     private fun getService(coinName: String): NewChainAssetService {
-        Logger.d("get service $coinName, chain name: ${CoinType.NEWCHAIN.name}")
         val tmpService = serviceMap[coinName]
         if(tmpService != null) {
-            Logger.d("return temp newchain asset ")
             return tmpService
         }
         val web3j = when(coinName) {
             CoinType.NEWCHAIN.name -> newWeb3j
             else -> ethWeb3j
         }
-        Logger.d("return newchain asset ")
         val service = NewChainAssetService(web3j)
         serviceMap[coinName] = service
         return service

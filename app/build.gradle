@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
 //    id 'kotlin-parcelize'
     id 'kotlin-android-extensions'
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
@@ -64,6 +65,9 @@ dependencies {
     implementation 'androidx.activity:activity-ktx:1.2.1'
     // network module
     implementation project(path: ':network')
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
 
     testImplementation 'junit:junit:4.+'

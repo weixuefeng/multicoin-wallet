@@ -16,9 +16,9 @@ class StoreKeyRepository constructor(private val localStoreKeyDao: LocalStoreKey
 
     fun getLocalStoreKeyById(id: String) = localStoreKeyDao.getLocalStoreKeyById(id)
 
-    suspend fun addLocalStoreKey(localStoreKey: LocalStoreKey) = localStoreKeyDao.addLocalStoreKey(localStoreKey)
+    fun addLocalStoreKey(localStoreKey: LocalStoreKey) = localStoreKeyDao.addLocalStoreKey(localStoreKey)
 
-    suspend fun updateLocalStoreKey(localStoreKey: LocalStoreKey) = localStoreKeyDao.updateLocalStoreKey(localStoreKey)
+    fun updateLocalStoreKey(localStoreKey: LocalStoreKey) = localStoreKeyDao.updateLocalStoreKey(localStoreKey)
 
-    suspend fun deleteLocalStoreKey(localStoreKey: LocalStoreKey) = localStoreKeyDao.deleteLocalStoreKey(localStoreKey)
+    fun deleteLocalStoreKey(localStoreKey: LocalStoreKey) = localStoreKeyDao.deleteLocalStoreKey(localStoreKey)
 }

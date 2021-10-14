@@ -20,11 +20,11 @@ interface LocalStoreKeyDao {
     fun getAllLocalStoreKeys(): Flow<List<LocalStoreKey>>
 
     @Update(entity = LocalStoreKey::class)
-    suspend fun updateLocalStoreKey(localStoreKey: LocalStoreKey): Int
+    fun updateLocalStoreKey(localStoreKey: LocalStoreKey): Int
 
     @Delete(entity = LocalStoreKey::class)
-    suspend fun deleteLocalStoreKey(localStoreKey: LocalStoreKey): Int
+    fun deleteLocalStoreKey(localStoreKey: LocalStoreKey): Int
 
     @Insert(entity = LocalStoreKey::class)
-    suspend fun addLocalStoreKey(localStoreKey: LocalStoreKey)
+    fun addLocalStoreKey(localStoreKey: LocalStoreKey)
 }
