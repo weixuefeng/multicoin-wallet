@@ -7,4 +7,5 @@
     <string name="home">Home</string>
     <string name="me">me</string>
     <string name="wallet">wallet</string>
+    <string name="create_wallet">create wallet</string>
 </resources>

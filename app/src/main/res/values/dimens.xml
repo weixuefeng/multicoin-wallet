@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="big_margin">16dp</dimen>
+    <dimen name="big_padding">16dp</dimen>
     <dimen name="normal">8dp</dimen>
     <dimen name="item_normal_height">64dp</dimen>
+
+    <dimen name="normal_icon_size">40dp</dimen>
 </resources>

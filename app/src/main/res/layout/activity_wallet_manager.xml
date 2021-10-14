@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="match_parent"
+    tools:context=".ui.walletmanager.WalletManagerActivity">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/coinRecyclerView"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:padding="@dimen/big_padding"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/chainName"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/coinInfoRecyclerView"
+            app:layout_constraintTop_toBottomOf="@id/chainName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/createWalletButton"
+            android:text="@string/create_wallet"
+            app:layout_constraintTop_toBottomOf="@id/coinInfoRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

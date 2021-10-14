@@ -1,15 +1,18 @@
 package com.explorer.wallettest.router
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import com.explorer.wallettest.event.ASSET_DETAIL
 import com.explorer.wallettest.event.LiveDataBus
 import com.explorer.wallettest.ui.home.HomeActivity
+import com.explorer.wallettest.ui.home.fragment.WalletFragment
 import com.explorer.wallettest.ui.wallet.CreateWalletActivity
 import com.explorer.wallettest.ui.wallet.CurrentWalletActivity
 import com.explorer.wallettest.ui.wallet.WalletListActivity
 import com.explorer.wallettest.ui.wallet.asset.AssetDetailActivity
 import com.explorer.wallettest.ui.wallet.transfer.TransferAssetActivity
+import com.explorer.wallettest.ui.walletmanager.WalletManagerActivity
 import wallet.core.jni.Account
 
 /**
@@ -51,6 +54,11 @@ object Router {
         val intent = Intent(context, TransferAssetActivity::class.java)
         context.startActivity(intent)
         LiveDataBus.with<Account>(ASSET_DETAIL).postStickData(mAccount)
+    }
+
+    fun openWalletManagerActivity(context: Context) {
+        val intent = Intent(context, WalletManagerActivity::class.java)
+        context.startActivity(intent)
     }
 
 }

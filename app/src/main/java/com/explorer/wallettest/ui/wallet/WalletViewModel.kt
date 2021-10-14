@@ -1,11 +1,13 @@
 package com.explorer.wallettest.viewmodel
 
 import androidx.lifecycle.*
+import com.explorer.wallettest.constants.WALLET_MAIN
 import com.explorer.wallettest.database.LocalStoreKey
 import com.explorer.wallettest.database.LocalStoreKeyDB
 import com.explorer.wallettest.repository.PreferenceRepository
 import com.explorer.wallettest.repository.StoreKeyRepository
 import com.explorer.wallettest.ui.base.BaseViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import wallet.core.jni.StoredKey
@@ -26,8 +28,8 @@ class WalletViewModel(
 
     fun getLocalStoreKeyById(id: String) = storeKeyRepository.getLocalStoreKeyById(id).asLiveData()
 
-    private fun wrapStoreKey(storedKey: StoredKey): LocalStoreKey {
-        return LocalStoreKey(storedKey.identifier(), storedKey.isMnemonic, String(storedKey.exportJSON()))
+    private fun wrapStoreKey(storedKey: StoredKey, type: String = WALLET_MAIN): LocalStoreKey {
+        return LocalStoreKey(storedKey.identifier(), storedKey.isMnemonic, String(storedKey.exportJSON()), type, System.currentTimeMillis())
     }
 
     fun unWrapStoreKey(localStoreKey: LocalStoreKey): StoredKey {
@@ -42,20 +44,28 @@ class WalletViewModel(
         return keys
     }
 
-    fun addLocalStoreKey(storedKey: StoredKey) = viewModelScope.launch {
-        val localStoreKey = wrapStoreKey(storedKey)
-        storeKeyRepository.addLocalStoreKey(localStoreKey)
-        preferenceRepository.setCurrentWalletId(localStoreKey.id)
+    fun addLocalStoreKey(storedKey: StoredKey, type: String = WALLET_MAIN) = viewModelScope.launch {
+        val localStoreKey = wrapStoreKey(storedKey, type)
+        async {
+            storeKeyRepository.addLocalStoreKey(localStoreKey)
+            preferenceRepository.setCurrentWalletId(localStoreKey.id)
+        }
     }
 
     fun updateLocalStoreKey(storedKey: StoredKey) = viewModelScope.launch {
         val localStoreKey = wrapStoreKey(storedKey)
-        storeKeyRepository.updateLocalStoreKey(localStoreKey)
+        async {
+            storeKeyRepository.updateLocalStoreKey(localStoreKey)
+        }
     }
 
     fun deleteLocalStoreKey(storedKey: StoredKey) = viewModelScope.launch {
-        storeKeyRepository.deleteLocalStoreKey(wrapStoreKey(storedKey))
+        async {
+            storeKeyRepository.deleteLocalStoreKey(wrapStoreKey(storedKey))
+        }
     }
+
+    fun getMainStoreKey() = storeKeyRepository.getLocalStoreKeyByType(WALLET_MAIN).asLiveData()
 
     private val currentWallet = MutableLiveData<LocalStoreKey>()
 

@@ -13,4 +13,12 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+    
+    <style name="AnimationActivity" parent="Theme.WalletTest">
+        <item name="android:activityOpenEnterAnimation">@anim/right_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/left_in</item>
+
+        <item name="android:activityCloseEnterAnimation">@anim/right_out</item>
+        <item name="android:activityCloseExitAnimation">@anim/left_out</item>
+    </style>
 </resources>

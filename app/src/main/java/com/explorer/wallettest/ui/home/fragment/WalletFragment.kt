@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.explorer.wallettest.R
+import com.explorer.wallettest.router.Router
+import kotlinx.android.synthetic.main.wallet_fragment.*
 
 class WalletFragment : Fragment() {
 
@@ -27,6 +29,10 @@ class WalletFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(WalletViewModel::class.java)
         // TODO: Use the ViewModel
+
+        ivWallet.setOnClickListener {
+            Router.openWalletManagerActivity(requireContext())
+        }
     }
 
 }

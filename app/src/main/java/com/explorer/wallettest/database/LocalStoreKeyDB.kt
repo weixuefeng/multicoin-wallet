@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.explorer.wallettest.App
+import com.explorer.wallettest.constants.LocalStoreKeyName
 
 /**
  * @author weixuefeng@diynova.com
@@ -29,7 +30,7 @@ abstract class LocalStoreKeyDB: RoomDatabase() {
 
         private fun buildDatabase(context: Context): LocalStoreKeyDB =
             Room.databaseBuilder(context.applicationContext,
-                LocalStoreKeyDB::class.java, "localStoreKey.db")
+                LocalStoreKeyDB::class.java, LocalStoreKeyName)
                 .build()
     }
 }

@@ -19,12 +19,15 @@ interface LocalStoreKeyDao {
     @Query("SELECT * FROM localStoreKey")
     fun getAllLocalStoreKeys(): Flow<List<LocalStoreKey>>
 
+    @Query("SELECT * FROM localStoreKey WHERE type = :type order by timeStamp desc")
+    fun getLocalStoreKeyByType(type: String): Flow<List<LocalStoreKey>>
+
     @Update(entity = LocalStoreKey::class)
-    fun updateLocalStoreKey(localStoreKey: LocalStoreKey): Int
+    suspend fun updateLocalStoreKey(localStoreKey: LocalStoreKey): Int
 
     @Delete(entity = LocalStoreKey::class)
-    fun deleteLocalStoreKey(localStoreKey: LocalStoreKey): Int
+    suspend fun deleteLocalStoreKey(localStoreKey: LocalStoreKey): Int
 
     @Insert(entity = LocalStoreKey::class)
-    fun addLocalStoreKey(localStoreKey: LocalStoreKey)
+    suspend fun addLocalStoreKey(localStoreKey: LocalStoreKey)
 }
