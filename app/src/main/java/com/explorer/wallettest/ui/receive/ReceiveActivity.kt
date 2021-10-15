@@ -39,7 +39,7 @@ class ReceiveActivity : BaseActivity<ReceiveViewModel>() {
         tvTitle.text = it.address()
         GlobalScope.run {
             async {
-                val bitmap = QRCodeEncoder.syncEncodeQRCode("${it.coin().name.lowercase()}:${it.address()}", 400, Color.parseColor("#ffffff"))
+                val bitmap = QRCodeEncoder.syncEncodeQRCode("${it.coin().name.lowercase()}:${it.address()}", 400, Color.parseColor("#000000"))
                 ivQrCode.setImageBitmap(bitmap)
             }
         }
