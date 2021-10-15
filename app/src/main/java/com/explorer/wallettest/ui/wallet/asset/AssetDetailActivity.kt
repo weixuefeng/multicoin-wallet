@@ -37,7 +37,7 @@ class AssetDetailActivity: BaseActivity<WalletViewModel>() {
             mAccount = it
             addressTextView.text = mAccount.address()
             sendButton.setOnClickListener {
-                Router.openTransferAssetActivity(this, mAccount)
+//                Router.openTransferAssetActivity(this, mAccount)
             }
         })
     }

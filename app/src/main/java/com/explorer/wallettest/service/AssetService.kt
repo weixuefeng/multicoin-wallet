@@ -23,5 +23,5 @@ interface AssetService {
 
     fun buildTransaction(coinName: String, address: String)
 
-    fun sendRawTransaction(coinName: String, transaction: String)
+    fun sendRawTransaction(coinName: String, transaction: String): Single<String>
 }

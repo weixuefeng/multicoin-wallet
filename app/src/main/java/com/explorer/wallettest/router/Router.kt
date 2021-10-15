@@ -3,6 +3,8 @@ package com.explorer.wallettest.router
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import com.explorer.wallettest.database.LocalStoreKey
+import com.explorer.wallettest.entity.TransferPageParams
 import com.explorer.wallettest.event.ASSET_DETAIL
 import com.explorer.wallettest.event.LiveDataBus
 import com.explorer.wallettest.ui.home.HomeActivity
@@ -50,10 +52,10 @@ object Router {
         LiveDataBus.with<Account>(ASSET_DETAIL).postStickData(data)
     }
 
-    fun openTransferAssetActivity(context: Activity, mAccount: Account) {
+    fun openTransferAssetActivity(context: Context, mAccount: Account, localStoreKey: LocalStoreKey) {
         val intent = Intent(context, TransferAssetActivity::class.java)
         context.startActivity(intent)
-        LiveDataBus.with<Account>(ASSET_DETAIL).postStickData(mAccount)
+        LiveDataBus.with<TransferPageParams>(ASSET_DETAIL).postStickData(TransferPageParams(mAccount, localStoreKey))
     }
 
     fun openWalletManagerActivity(context: Context) {

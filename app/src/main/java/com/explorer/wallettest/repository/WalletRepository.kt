@@ -1,12 +1,9 @@
 package com.explorer.wallettest.repository
 
 import com.explorer.wallettest.logger.LogInterceptor
-import com.explorer.wallettest.logger.Logger
-import com.explorer.wallettest.service.AssetService
-import com.explorer.wallettest.service.NewChainAssetService
+import com.explorer.wallettest.service.Web3AssetService
 import io.reactivex.Single
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.methods.request.Transaction
 import org.web3j.protocol.http.HttpService
@@ -31,6 +28,14 @@ class WalletRepository : IWalletRepository {
         return getService(coinName).getTransactionGasLimit(coinName, transaction)
     }
 
+    override fun getTransactionCount(coinName: String, address: String): Single<BigInteger> {
+        return getService(coinName).getTransactionCount(coinName, address)
+    }
+
+    override fun sendRawTransaction(coinName: String, signedTransaction: String): Single<String> {
+        return getService(coinName).sendRawTransaction(coinName, signedTransaction)
+    }
+
     private val newWeb3j = Web3j.build(
         HttpService(
             "https://devnet.newchain.cloud.diynova.com/",
@@ -42,12 +47,12 @@ class WalletRepository : IWalletRepository {
     private val ethWeb3j = Web3j.build(
         HttpService(
             "https://devnet.newchain.cloud.diynova.com/",
-            OkHttpClient().newBuilder().addInterceptor(HttpLoggingInterceptor()).build(),
+            OkHttpClient().newBuilder().addInterceptor(LogInterceptor()).build(),
             true
         ),
     )
 
-    private fun getService(coinName: String): NewChainAssetService {
+    private fun getService(coinName: String): Web3AssetService {
         val tmpService = serviceMap[coinName]
         if(tmpService != null) {
             return tmpService
@@ -56,10 +61,10 @@ class WalletRepository : IWalletRepository {
             CoinType.NEWCHAIN.name -> newWeb3j
             else -> ethWeb3j
         }
-        val service = NewChainAssetService(web3j)
+        val service = Web3AssetService(web3j)
         serviceMap[coinName] = service
         return service
     }
 
-    private val serviceMap = HashMap<String, NewChainAssetService>()
+    private val serviceMap = HashMap<String, Web3AssetService>()
 }

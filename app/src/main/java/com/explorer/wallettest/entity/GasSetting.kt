@@ -11,5 +11,6 @@ import java.math.BigInteger
  */
 data class GasSetting(
     val gasPrice: BigInteger,
-    val gasLimit: BigInteger
+    val gasLimit: BigInteger,
+    val nonce: BigInteger
 )

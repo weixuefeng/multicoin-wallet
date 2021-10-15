@@ -76,9 +76,7 @@ class WalletViewModel(
 
     fun onCurrentWallet(): LiveData<LocalStoreKey> = currentWallet
 
-
     fun onCurrentWalletId() = preferenceRepository.getCurrentWalletId().asLiveData()
-
 
     override fun clear() {
 
@@ -88,12 +86,15 @@ class WalletViewModel(
 
     fun setCurrentAccount(data: Account) = viewModelScope.launch{
         async {
-
-            Logger.d("TAG", gson.toJson(data))
             preferenceRepository.setCurrentAccount(data.unWrap())
         }
     }
 
+    fun setCurrentLocalStoreKey(localStoreKey: LocalStoreKey) = viewModelScope.launch {
+        async {
+            preferenceRepository.setCurrentLocalStoreKey(localStoreKey)
+        }
+    }
 }
 
 object WalletViewModelFactory : ViewModelProvider.Factory {

@@ -1,5 +1,7 @@
 package com.explorer.wallettest.entity
 
+import com.explorer.wallettest.database.LocalStoreKey
+import wallet.core.jni.Account
 import wallet.core.jni.CoinType
 
 /**
@@ -20,4 +22,9 @@ data class UnWrapAccount (
     val address: String,
     val derivationPath: String,
     val extendedPublicKey: String
+)
+
+data class TransferPageParams (
+    val account: Account,
+    val localStoreKey: LocalStoreKey
 )

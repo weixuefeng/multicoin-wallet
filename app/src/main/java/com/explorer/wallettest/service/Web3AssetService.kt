@@ -1,16 +1,11 @@
 package com.explorer.wallettest.service
 
-import com.explorer.wallettest.logger.Logger
 import com.explorer.wallettest.utils.AssetUtils
-import com.google.protobuf.ByteString
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
 import org.web3j.protocol.core.methods.request.Transaction
-import org.web3j.utils.Convert
 import wallet.core.jni.CoinType
-import wallet.core.jni.proto.NewChain
 import java.math.BigInteger
 
 /**
@@ -20,7 +15,7 @@ import java.math.BigInteger
  * @description
  * @copyright (c) 2021 Newton Foundation. All rights reserved.
  */
-class NewChainAssetService(private val web3j: Web3j): AssetService {
+class Web3AssetService(private val web3j: Web3j): AssetService {
 
     override fun getBalance(coinName: String, address: String): Single<BigInteger> {
         return Single.fromCallable { web3j.ethGetBalance(address, DefaultBlockParameterName.LATEST).send().balance }
@@ -58,8 +53,11 @@ class NewChainAssetService(private val web3j: Web3j): AssetService {
 //        }
     }
 
-    override fun sendRawTransaction(coinName: String, transaction: String) {
+    override fun sendRawTransaction(coinName: String, transaction: String): Single<String> {
         AssetUtils.checkCoinName(coinName, CoinType.NEWCHAIN)
-
+        return Single.fromCallable {
+            val raw = web3j.ethSendRawTransaction(transaction).send()
+            raw.transactionHash
+        }
     }
 }

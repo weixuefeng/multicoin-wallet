@@ -7,14 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.explorer.wallettest.R
 import com.explorer.wallettest.constants.WALLET_MAIN
 import com.explorer.wallettest.database.LocalStoreKey
-import com.explorer.wallettest.logger.Logger
-import com.explorer.wallettest.router.Router
 import com.explorer.wallettest.ui.base.BaseActivity
 import com.explorer.wallettest.ui.base.ICustomViewActionListener
 import com.explorer.wallettest.utils.getSupportCoin
 import com.explorer.wallettest.utils.password
 import com.explorer.wallettest.utils.supportCoin
-import com.explorer.wallettest.utils.toJson
 import com.explorer.wallettest.viewmodel.WalletViewModel
 import com.explorer.wallettest.viewmodel.WalletViewModelFactory
 import kotlinx.android.synthetic.main.activity_wallet_manager.*
@@ -27,6 +24,7 @@ class WalletManagerActivity : BaseActivity<WalletViewModel>() {
 
     lateinit var mCoinInfo: CoinInfo
     private var mCurrentStoreKey: StoredKey? = null
+    private var mCurrentLocalStoreKey: LocalStoreKey? = null
     lateinit var accountAdapter: AccountRecyclerAdapter
 
     override fun initView() {
@@ -50,24 +48,20 @@ class WalletManagerActivity : BaseActivity<WalletViewModel>() {
             createWallet()
         }
 
-
         // account recyclerView info
         coinInfoRecyclerView.layoutManager = LinearLayoutManager(this)
         accountAdapter = AccountRecyclerAdapter(object : ICustomViewActionListener<Account> {
             override fun onAction(action: String, view: View, data: Account) {
-                Logger.d("Action", action)
-                Logger.d("Action", data.toJson())
                 when(action) {
                     ICustomViewActionListener.ACTION_ROOT_VIEW_CLICKED -> {
                         viewModel.setCurrentAccount(data)
+                        viewModel.setCurrentLocalStoreKey(addressStoreKeyMap[data.address()]!!)
                         finish()
                     }
                 }
-
             }
         })
         coinInfoRecyclerView.adapter = accountAdapter
-
         // todo: first load default wallet.
         getAccountInfo()
     }
@@ -76,16 +70,20 @@ class WalletManagerActivity : BaseActivity<WalletViewModel>() {
         viewModel.getAccountInfo(mCoinInfo.coinType).observe(this, onAccountInfo)
     }
 
+    private val addressStoreKeyMap = mutableMapOf<String, LocalStoreKey>()
+
     private val onAccountInfo = Observer<List<LocalStoreKey>> { listLocalStoreKey ->
         val accounts = listLocalStoreKey.map {
-            val storeKey = viewModel.unWrapStoreKey(it)
-            storeKey.account(0)
+            val account = viewModel.unWrapStoreKey(it).account(0)
+            addressStoreKeyMap[account.address()] = it
+            account
         }.toMutableList()
 
         if(mCurrentStoreKey != null) {
             mCurrentStoreKey!!.getSupportCoin(mCoinInfo.coinType).let {
                 if(it != null) {
                     accounts.add(0, it)
+                    addressStoreKeyMap[it.address()] = mCurrentLocalStoreKey!!
                 }
             }
         }
@@ -123,12 +121,11 @@ class WalletManagerActivity : BaseActivity<WalletViewModel>() {
     }
 
     private val onMainStoreKey = Observer<List<LocalStoreKey>> {
-        Logger.d(TAG, "main store key length: ${it.size}")
         if (it.isEmpty()) {
             return@Observer
         } else {
-            val localStoreKey = it[0]
-            mCurrentStoreKey = viewModel.unWrapStoreKey(localStoreKey)
+            mCurrentLocalStoreKey = it[0]
+            mCurrentStoreKey = viewModel.unWrapStoreKey(mCurrentLocalStoreKey!!)
         }
     }
 

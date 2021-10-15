@@ -16,4 +16,8 @@ interface IWalletRepository {
     fun getGasPrice(coinName: String): Single<BigInteger>
 
     fun estimateGas(coinName: String, transaction: Transaction): Single<BigInteger>
+
+    fun getTransactionCount(coinName: String, address: String): Single<BigInteger>
+
+    fun sendRawTransaction(coinName: String, signedTransaction: String): Single<String>
 }

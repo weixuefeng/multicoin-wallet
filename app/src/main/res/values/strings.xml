@@ -8,4 +8,6 @@
     <string name="me">me</string>
     <string name="wallet">wallet</string>
     <string name="create_wallet">create wallet</string>
+    <string name="send">send</string>
+    <string name="receive">receive</string>
 </resources>

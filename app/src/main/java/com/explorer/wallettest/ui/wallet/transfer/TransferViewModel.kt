@@ -1,9 +1,6 @@
 package com.explorer.wallettest.ui.wallet.transfer
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.explorer.wallettest.entity.GasSetting
 import com.explorer.wallettest.logger.Logger
 import com.explorer.wallettest.repository.IWalletRepository
@@ -14,7 +11,11 @@ import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.web3j.protocol.core.methods.request.Transaction
+import wallet.core.jni.CoinType
+import wallet.core.jni.proto.NewChain
 
 /**
  * @author weixuefeng@diynova.com
@@ -37,12 +38,12 @@ class TransferViewModel(
     fun onGasSetting(): LiveData<GasSetting> = gasSetting
 
     fun getGasSetting(coinName: String, from: String, to: String? = null, data: String? = null) {
-        Logger.d("getGasSetting")
         val transaction = Transaction.createEthCallTransaction(from, to, data)
         val subscribe = Single
             .zip(walletRepository.getGasPrice(coinName),
                     walletRepository.estimateGas(coinName, transaction),
-                    { t1, t2 -> GasSetting(t1, t2) })
+                walletRepository.getTransactionCount(coinName, from)
+            ) { gasPrice, gasLimit, count -> GasSetting(gasPrice, gasLimit, count) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : SingleObserver<GasSetting> {
@@ -60,6 +61,15 @@ class TransferViewModel(
                 }
             })
     }
+
+    fun getTransactionCount(coinType: CoinType, address: String) = viewModelScope.launch {
+        async {
+            walletRepository.getTransactionCount(coinType.name, address)
+        }
+    }
+
+    fun sendTransaction(coinType: CoinType, rawTransaction: String) = walletRepository.sendRawTransaction(coinType.name, rawTransaction)
+
 
 
 }

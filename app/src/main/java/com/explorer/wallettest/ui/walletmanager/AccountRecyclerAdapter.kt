@@ -6,7 +6,6 @@ import com.explorer.wallettest.ui.base.BaseViewHolder
 import com.explorer.wallettest.ui.base.ICustomViewActionListener
 import com.explorer.wallettest.ui.common.WalletCoinItemView
 import wallet.core.jni.Account
-import java.util.ArrayList
 
 class AccountRecyclerAdapter(private val listener: ICustomViewActionListener<Account>): RecyclerView.Adapter<BaseViewHolder<Account>>() {
 

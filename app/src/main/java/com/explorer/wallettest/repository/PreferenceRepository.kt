@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.explorer.wallettest.App
+import com.explorer.wallettest.database.LocalStoreKey
 import com.explorer.wallettest.entity.UnWrapAccount
 import com.explorer.wallettest.logger.Logger
 import com.explorer.wallettest.utils.gson
@@ -27,6 +28,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "se
 
 val CURRENT_WALLET_ID = stringPreferencesKey("current_wallet_id")
 val CURRENT_ACCOUNT = stringPreferencesKey("current_account")
+val CURRENT_LOCAL_STORE_KEY = stringPreferencesKey("current_local_store_key")
 
 class PreferenceRepository(private val context: Context) {
 
@@ -39,6 +41,18 @@ class PreferenceRepository(private val context: Context) {
     suspend fun setCurrentWalletId(walletId: String) {
         context.dataStore.edit {
             it[CURRENT_WALLET_ID] = walletId
+        }
+    }
+
+    fun getCurrentLocalStoreKey(): Flow<LocalStoreKey?> {
+        return context.dataStore.data.map {
+            gson.fromJson(it[CURRENT_LOCAL_STORE_KEY], LocalStoreKey::class.java)
+        }
+    }
+
+    suspend fun setCurrentLocalStoreKey(localStoreKey: LocalStoreKey) {
+        context.dataStore.edit {
+            it[CURRENT_LOCAL_STORE_KEY] = localStoreKey.toJson()
         }
     }
 
