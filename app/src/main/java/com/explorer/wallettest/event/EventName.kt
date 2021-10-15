@@ -10,3 +10,4 @@ package com.explorer.wallettest.event
 const val CREATE_WALLET_STORE_KEY = "CREATE_WALLET_STORE_KEY"
 const val ADD_ASSET = "ADD_ASSET"
 const val ASSET_DETAIL = "ASSET_DETAIL"
+const val ACCOUNT = "ACCOUNT"

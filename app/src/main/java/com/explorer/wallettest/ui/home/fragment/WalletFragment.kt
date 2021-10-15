@@ -47,7 +47,7 @@ class WalletFragment : Fragment() {
             Router.openTransferAssetActivity(requireContext(), unWrapAccount!!.wrap(), mLocalStoreKey!!)
         }
         receive.setOnClickListener {
-            // TODO: OPEN RECEIVE PAGE
+            Router.openReceiveActivity(requireContext(), unWrapAccount!!.wrap())
         }
     }
 

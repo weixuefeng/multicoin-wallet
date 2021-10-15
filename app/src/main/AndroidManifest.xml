@@ -3,6 +3,8 @@
     package="com.explorer.wallettest">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".App"
@@ -13,7 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WalletTest"
         android:usesCleartextTraffic="true">
-
+        <activity
+            android:name=".ui.scan.ScanActivity"
+            android:exported="true" />
         <activity android:name=".ui.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,8 +34,10 @@
         <activity
             android:name=".ui.walletmanager.WalletManagerActivity"
             android:exported="true"
-            android:theme="@style/AnimationActivity"
-            />
+            android:theme="@style/AnimationActivity" />
+        <activity
+            android:name=".ui.receive.ReceiveActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

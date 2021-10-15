@@ -11,6 +11,7 @@ import com.explorer.wallettest.entity.TransferPageParams
 import com.explorer.wallettest.event.ASSET_DETAIL
 import com.explorer.wallettest.event.LiveDataBus
 import com.explorer.wallettest.logger.Logger
+import com.explorer.wallettest.router.Router
 import com.explorer.wallettest.ui.base.BaseActivity
 import com.explorer.wallettest.utils.password
 import com.explorer.wallettest.utils.toHexByteArray
@@ -45,7 +46,9 @@ class TransferAssetActivity: BaseActivity<TransferViewModel>() {
     private val transferViewModel: TransferViewModel by viewModels { TransferViewModelFactory }
 
     override fun initView() {
-
+        scanButton.setOnClickListener {
+            Router.openScanActivity(this)
+        }
     }
 
     override fun initIntent() {
